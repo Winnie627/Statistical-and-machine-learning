@@ -1,0 +1,40 @@
+# e2.1
+import numpy as np
+import random
+x1 = np.array([3, 3])
+y1 = 1
+x2 = np.array([4, 3])
+y2 = 1
+x3 = np.array([1, 1])
+y3 = -1
+X = np.array([x1, x2, x3])
+Y = np.array([y1, y2, y3])
+# data_raw = np.loadtxt("D:/Pycharmproject/Lihang-master/CH02/Input/data_2-1.txt")
+# X = data_raw[:, :2]
+# y = data_raw[:, -1]
+# print(X, y)
+
+max_iter = 100
+n = 0
+w = np.zeros(X.shape[1]+1)
+b = []
+correct_count = 0
+while n < max_iter:
+    index = random.randint(0, Y.shape[0]-1)
+    x = np.hstack([X[index], 1])
+    y = 2*Y[index] - 1
+    wx = np.dot(w, x)
+    if wx*y > 0:
+        correct_count += 1
+        if correct_count > max_iter:
+            break
+        continue
+    w += y*x
+    n += 1
+    if True:
+        print(n)
+
+X = np.hstack([X, np.ones(X.shape[0]).reshape((-1, 1))])
+rst = np.array([1 if rst else -1 for rst in np.dot(X, w) > 0])
+print(rst)
+
