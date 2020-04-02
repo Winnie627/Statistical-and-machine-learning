@@ -1,18 +1,30 @@
+# e3.2 Kd平衡树
 import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-from sklearn.datasets import load_iris
-from sklearn.model_selection import train_test_split
-from collections import Counter
+from pprint import pformat
+from collections import namedtuple
+from matplotlib import pyplot as plt
+from scipy.cluster import hierarchy
+# 定义迭代函数
 
-iris = load_iris()
-df = pd.DataFrame(iris.data, columns=iris.feature_names)
-df['label'] = iris.target
-df.columns = ['sepal length', 'sepal width', 'petal length', 'petal width', 'label']
 
-plt.scatter(df[:50]['sepal length'], df[:50]['sepal width'], label='0')
-plt.scatter(df[50:100]['sepal length'], df[50:100]['sepal width'], label='1')
-plt.xlabel('sepal length')
-plt.ylabel('sepal width')
-plt.legend()
-plt.show()
+def fix(X, depth=0):
+    k = X.shape[1]
+    axis = depth % k
+    X = X[X[:, axis].argsort()]
+    median = X.shape[0] // 2
+    try:
+        X[median]
+    except IndexError:
+        return None
+    location = X[median]
+    left_child = fix(X[:median], depth+1)
+    right_child = fix(X[median+1:], depth+1)
+    Node = namedtuple('Node', 'location left_child right_child')
+    rst = Node(location, left_child, right_child)
+    return pformat(tuple(rst))
+
+
+X = np.array([[2, 3], [5, 4], [9, 6], [4, 7], [8, 1], [7, 2]])
+R = fix(X)
+print(R)
+
