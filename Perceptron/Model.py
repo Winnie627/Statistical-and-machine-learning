@@ -14,7 +14,7 @@ class Model:
 
     def fit(self, X_train, y_train):
         self.w = np.zeros(X_train.shape[1]+1)
-        max_iter = 100
+        max_iter = 1000
         n = 0
         correct_count = 0
         while n < max_iter:
