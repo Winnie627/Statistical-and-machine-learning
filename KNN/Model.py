@@ -1,6 +1,7 @@
 import numpy as np
 from collections import namedtuple
-
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
 
 class knnModel(object):
 
@@ -67,3 +68,29 @@ class knnModel(object):
 
         return result(nearest, dist, nodes_visited)
 
+
+# 用数据集测试：给定一个测试点，用kd搜索树的方法找到它的最近点（1个），根据这个最近点的类别判断该测试点的类别
+X_, y_ = load_iris(return_X_y=True)
+X = X_[:100, [0, 1]]
+y = y_[:100]
+clf = knnModel()
+tree = clf.fix(X)
+target = np.array([6, 3])
+ret = clf.search(target, tree)
+print(type(ret.nearest_point))
+
+zipped = list(zip(X, y))  # python3需要转列表
+for i, val in enumerate(zipped):
+    if np.all(val[0] == ret.nearest_point):
+        print(zipped[i][-1])
+
+# 下面函数方法依然可以
+# def find_index_of_array(list, array):
+#     for i in range(len(list)):
+#         if np.all(list[i][0] == array):
+#             return i
+#
+#
+# id = find_index_of_array(zipped, ret.nearest_point)
+# rst_class = y[id]
+# print(rst_class)
