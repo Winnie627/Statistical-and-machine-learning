@@ -1,15 +1,16 @@
 # e3.2 Kd平衡树 + q3.2 k近邻搜索
 import numpy as np
-from pprint import pformat
 from collections import namedtuple
 # 定义递归函数
 
 
+# 生成kd树
 def fix(X, depth=0):
+    print(X)
     k = X.shape[1]
     axis = depth % k
     X = X[X[:, axis].argsort()]
-    median = X.shape[0] // 2
+    median = X.shape[0] // 2  # 从小到大的数组值索引
     try:
         X[median]
     except IndexError:
@@ -33,10 +34,6 @@ def search(point, tree, max_dist, depth=0):
     nodes_visited = 1
     s = depth % k  # 进行分割的参考维度序号
 
-    # if best is None or np.linalg.norm(point-tree.location, ord=2)<np.linalg.norm(best-tree, ord=p):
-    #     next_best = tree.location
-    # else:
-    #     next_best = best
     if point[s] < tree.location[s]:
         nearer_node = tree.left_child
         further_node = tree.right_child
